@@ -12,7 +12,8 @@
     </li>
   </ul>
 
-  <button type="button" [disabled]="!(hasMore$ | async)"
+  <button type="button"
+    [disabled]="!(hasMore$ | async)"
     (click)="onLoadMoreClicked($event)">Load More</button>
     <button type="button"
     (click)="onRefreshClicked($event)">Refreh</button>

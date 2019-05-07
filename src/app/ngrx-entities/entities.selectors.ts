@@ -12,6 +12,9 @@ export const getList = <T extends { id: string }>(state: EntitiesStateModel<T>) 
 export const hasMore = <T extends { id: string }>(state: EntitiesStateModel<T>) =>
   state.paging.pages > state.paging.pageNumber;
 
+export const hasData = <T extends { id: string }>(state: EntitiesStateModel<T>) =>
+  state.ids && state.ids.length > 0;
+
 export const getNextPage = <T extends { id: string }>(state: EntitiesStateModel<T>) =>
   state.paging.pageNumber + 1;
 

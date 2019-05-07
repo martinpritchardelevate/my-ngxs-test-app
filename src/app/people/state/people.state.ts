@@ -1,6 +1,6 @@
 import { catchError } from 'rxjs/operators';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { hasMore, getNextPage, getList, CRUD, success } from '../../ngrx-entities';
+import { hasData, hasMore, getNextPage, getList, CRUD, success } from '../../ngrx-entities';
 import * as actions from './people.actions';
 import { PeopleStateModel, Person } from './people.model';
 import { PeopleService } from './people.service';
@@ -20,6 +20,11 @@ export class PeopleState {
   @Selector()
   static hasMore(state: PeopleStateModel): boolean {
     return hasMore(state);
+  }
+
+  @Selector()
+  static hasData(state: PeopleStateModel): boolean {
+    return hasData(state);
   }
 
   constructor(
