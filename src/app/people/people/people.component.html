@@ -1,0 +1,62 @@
+<section>
+
+  Count {{ (people$ | async)?.length }}
+
+  <ul *ngIf="(people$ | async); let people">
+    <li *ngFor="let person of people"
+      (click)="onPersonClicked(person)">
+      {{ person.id + ' ' + person.forename + ' ' + person.surname + ' ' + person.age }}
+      <button type="button"
+        (click)="onDelete(person)">Delete</button>
+    </li>
+  </ul>
+
+
+  <form>
+
+    <label>
+      ID<br>
+      <input
+        type="text"
+        [(ngModel)]="selectedPerson.id"
+        id="id" name="id" required>
+    </label><br>
+
+    <label>
+      Forename<br>
+      <input
+        type="text"
+        [(ngModel)]="selectedPerson.forename"
+        id="forename" name="forename" required>
+    </label><br>
+
+    <label>
+      Surname<br>
+      <input
+        type="text"
+        [(ngModel)]="selectedPerson.surname"
+        id="surname" name="surname">
+    </label><br>
+
+    <label>
+      Age<br>
+      <input
+        type="number"
+        [(ngModel)]="selectedPerson.age"
+        id="age" name="age">
+    </label><br><br>
+
+    <button type="button"
+      (click)="onUpdate($event)">
+      Update
+    </button>
+    <button type="button"
+      (click)="onCreate($event)">
+      Add
+    </button>
+
+  </form>
+
+  <button type="button" (click)="onCreateClicked($event)">Create</button>
+
+</section>
