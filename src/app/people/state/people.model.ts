@@ -4,7 +4,8 @@ export class PeopleStateModel implements EntitiesStateModel<Person> {
   constructor(
     public paging: ApiCollectionPagingInfo = new ApiCollectionPagingInfo(),
     public ids: Array<string> = [],
-    public entities: { [id: string]: Person } = {}
+    public entities: { [id: string]: Person } = {},
+    public isBusy = false
     ) { }
 }
 

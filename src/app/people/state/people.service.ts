@@ -1,8 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { Person } from './people.model';
 import { ApiCollection, ApiCollectionPagingInfo } from '../../ngrx-entities';
+import { Person } from './people.model';
 
 @Injectable()
 export class PeopleService {

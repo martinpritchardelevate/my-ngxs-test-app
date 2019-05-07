@@ -2,6 +2,7 @@ export class EntitiesStateModel<T extends { id: string }> {
   entities: { [id: string]: T };
   ids: string[];
   paging: ApiCollectionPagingInfo;
+  isBusy: boolean;
 }
 
 export class ApiCollectionPagingInfo {
@@ -14,11 +15,11 @@ export class ApiCollectionPagingInfo {
 
   // public static parse(metaData: ApiMetaData | any) {
   public static parse(metaData: any) {
-      return new ApiCollectionPagingInfo(
-          metaData.totalResults,
-          metaData.pages,
-          metaData.pageNumber
-      );
+    return new ApiCollectionPagingInfo(
+      metaData.totalResults,
+      metaData.pages,
+      metaData.pageNumber
+    );
   }
 
 }

@@ -1,5 +1,5 @@
-import { Person } from './people.model';
 import * as entityActions from '../../ngrx-entities';
+import { Person } from './people.model';
 
 const featureName = 'People';
 

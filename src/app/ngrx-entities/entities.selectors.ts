@@ -3,7 +3,7 @@ import { EntitiesStateModel } from './entities.model';
 export const getList = <T extends { id: string }>(state: EntitiesStateModel<T>) => {
   return state.ids.reduce((result, id) => {
     if (state.entities[id] !== undefined) {
-      result.push(state.entities[id]);
+      result.push({...state.entities[id]});
     }
     return result;
   }, []);

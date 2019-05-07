@@ -1,7 +1,6 @@
-import { hasMore, getNextPage, getList, CRUD, success, ApiCollection } from '../../ngrx-entities';
-import { map, tap, catchError } from 'rxjs/operators';
-import { asapScheduler } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import { hasMore, getNextPage, getList, CRUD, success } from '../../ngrx-entities';
 import * as actions from './people.actions';
 import { PeopleStateModel, Person } from './people.model';
 import { PeopleService } from './people.service';
@@ -34,11 +33,13 @@ export class PeopleState {
   /******************************************************/
 
   @Action(actions.Create)
-  create = (context: StateContext<PeopleStateModel>, action: actions.Create) =>
-    this.peopleService.create(action.entity)
+  create = (context: StateContext<PeopleStateModel>, action: actions.Create) => {
+    context.setState(CRUD.setBusy());
+    return this.peopleService.create(action.entity)
       .pipe(
         success(person => context.dispatch(new actions.CreateSuccess(person))),
-        catchError(error => context.dispatch(new actions.CreateFailed(error))))
+        catchError(error => context.dispatch(new actions.CreateFailed(error))));
+  }
 
   @Action(actions.CreateSuccess)
   createSuccess = (context: StateContext<PeopleStateModel>, action: actions.CreateSuccess) =>
@@ -49,19 +50,22 @@ export class PeopleState {
   /******************************************************/
 
   @Action([actions.Read])
-  read = (context: StateContext<PeopleStateModel>, action: actions.Create) =>
-    this.peopleService.read()
+  read = (context: StateContext<PeopleStateModel>, action: actions.Create) => {
+    context.setState(CRUD.setBusy());
+    return this.peopleService.read()
       .pipe(
         success(people => context.dispatch(new actions.ReadSuccess(people))),
-        catchError(error => context.dispatch(new actions.ReadFailed(error))))
-
+        catchError(error => context.dispatch(new actions.ReadFailed(error))));
+  }
 
   @Action(actions.ReadMore)
-  readMore = (context: StateContext<PeopleStateModel>, action: actions.ReadMore) =>
-    this.peopleService.read(getNextPage(context.getState()))
+  readMore = (context: StateContext<PeopleStateModel>, action: actions.ReadMore) => {
+    context.setState(CRUD.setBusy());
+    return this.peopleService.read(getNextPage(context.getState()))
       .pipe(
         success(people => context.dispatch(new actions.ReadSuccess(people))),
-        catchError(error => context.dispatch(new actions.ReadFailed(error))))
+        catchError(error => context.dispatch(new actions.ReadFailed(error))));
+  }
 
   @Action([actions.ReadSuccess])
   readSuccess = (context: StateContext<PeopleStateModel>, action: actions.ReadSuccess) =>
@@ -72,11 +76,13 @@ export class PeopleState {
   /******************************************************/
 
   @Action(actions.Update)
-  update = (context: StateContext<PeopleStateModel>, action: actions.Update) =>
-    this.peopleService.update(action.entity)
+  update = (context: StateContext<PeopleStateModel>, action: actions.Update) => {
+    context.setState(CRUD.setBusy());
+    return this.peopleService.update(action.entity)
       .pipe(
         success(person => context.dispatch(new actions.UpdateSuccess(person))),
-        catchError(error => context.dispatch(new actions.UpdateFailed(error))))
+        catchError(error => context.dispatch(new actions.UpdateFailed(error))));
+  }
 
   @Action([actions.UpdateSuccess])
   updateSuccess = (context: StateContext<PeopleStateModel>, action: actions.UpdateSuccess) =>
@@ -87,11 +93,13 @@ export class PeopleState {
   /******************************************************/
 
   @Action(actions.Delete)
-  delete = (context: StateContext<PeopleStateModel>, action: actions.Delete) =>
+  delete = (context: StateContext<PeopleStateModel>, action: actions.Delete) => {
+    context.setState(CRUD.setBusy());
     this.peopleService.delete(action.entity)
       .pipe(
         success(person => context.dispatch(new actions.DeleteSuccess(person))),
-        catchError(error => context.dispatch(new actions.DeleteFailed(error))))
+        catchError(error => context.dispatch(new actions.DeleteFailed(error))));
+  }
 
   @Action([actions.DeleteSuccess])
   deleteSuccess = (context: StateContext<PeopleStateModel>, action: actions.DeleteSuccess) =>
