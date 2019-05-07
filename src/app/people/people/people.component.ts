@@ -33,7 +33,6 @@ export class PeopleComponent implements OnInit {
   @Dispatch() personCreate = (person: Person) => new peopleActions.Create(person);
   @Dispatch() peopleRead = () => new peopleActions.Read();
   @Dispatch() peopleReadMore = () => new peopleActions.ReadMore();
-  @Dispatch() peopleRefresh = () => new peopleActions.Refresh();
   @Dispatch() personUpdate = (person: Person) => new peopleActions.Update(person);
   @Dispatch() personDelete = (person: Person) => new peopleActions.Delete(person);
 
@@ -60,7 +59,7 @@ export class PeopleComponent implements OnInit {
   }
 
   async onRefreshClicked(person: Person) {
-    await this.peopleRefresh();
+
   }
 
   async onLoadMoreClicked($event) {
