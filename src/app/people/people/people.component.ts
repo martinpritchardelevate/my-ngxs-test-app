@@ -39,7 +39,7 @@ export class PeopleComponent implements OnInit {
   createEmptyPerson = () => this.selectedPerson = new Person('', '', '', 0);
 
   onPersonClicked(person) {
-    this.selectedPerson = person;
+    this.selectedPerson = { ...person };
   }
 
   onCreateClicked($event) {
