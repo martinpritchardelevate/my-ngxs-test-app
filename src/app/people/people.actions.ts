@@ -7,8 +7,15 @@ export class Create {
   constructor(public person: Person) {}
 }
 
+export class Refresh {
+  static type = `[${featureName}] Refresh`;
+}
 export class Read {
   static type = `[${featureName}] Read`;
+}
+
+export class ReadMore {
+  static type = `[${featureName}] Read More`;
 }
 
 export class Update {

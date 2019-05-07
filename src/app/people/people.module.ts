@@ -4,6 +4,7 @@ import { NgxsModule } from '@ngxs/store';
 import { CommonModule } from '@angular/common';
 import { PeopleState } from './people.state';
 import { PeopleComponent} from './people/people.component';
+import { PeopleService } from './people.service';
 
 @NgModule({
   declarations: [PeopleComponent],
@@ -15,6 +16,9 @@ import { PeopleComponent} from './people/people.component';
     FormsModule
   ],
   exports: [PeopleComponent],
-  entryComponents: [PeopleComponent]
+  entryComponents: [PeopleComponent],
+  providers: [
+    PeopleService
+  ]
 })
 export class PeopleModule { }

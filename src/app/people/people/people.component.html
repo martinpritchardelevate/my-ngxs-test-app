@@ -1,6 +1,7 @@
 <section>
 
-  Count {{ (people$ | async)?.length }}
+  Count <strong>{{ (people$ | async)?.length }}</strong><br>
+  Has More: <strong>{{ ( hasMore$ | async ) ? 'yes' : 'no' }}</strong>
 
   <ul *ngIf="(people$ | async); let people">
     <li *ngFor="let person of people"
@@ -10,6 +11,12 @@
         (click)="onDelete(person)">Delete</button>
     </li>
   </ul>
+
+  <button type="button" [disabled]="!(hasMore$ | async)"
+    (click)="onLoadMoreClicked($event)">Load More</button>
+    <button type="button"
+    (click)="onRefreshClicked($event)">Refreh</button>
+    <br><br>
 
 
   <form>

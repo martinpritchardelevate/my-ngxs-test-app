@@ -1,8 +1,12 @@
 import { EntitiesStateModel } from './entities.model';
+import { ApiCollectionPagingInfo } from './api-collection.model';
 
-export interface PeopleStateModel extends EntitiesStateModel<Person> {
-  ids: Array<string>;
-  entities: { [id: string]: Person };
+export class PeopleStateModel implements EntitiesStateModel<Person> {
+  constructor(
+    public paging: ApiCollectionPagingInfo = new ApiCollectionPagingInfo(),
+    public ids: Array<string> = [],
+    public entities: { [id: string]: Person } = {}
+    ) { }
 }
 
 export class Person {
