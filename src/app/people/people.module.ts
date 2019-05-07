@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgxsModule } from '@ngxs/store';
 import { CommonModule } from '@angular/common';
-import { PeopleState } from './people.state';
+import { PeopleState } from './state/people.state';
 import { PeopleComponent} from './people/people.component';
-import { PeopleService } from './people.service';
+import { PeopleService } from './state/people.service';
+import { EntitiesModule } from '../ngrx-entities';
 
 @NgModule({
   declarations: [PeopleComponent],
@@ -13,7 +14,8 @@ import { PeopleService } from './people.service';
     NgxsModule.forFeature([
       PeopleState
     ]),
-    FormsModule
+    FormsModule,
+    EntitiesModule
   ],
   exports: [PeopleComponent],
   entryComponents: [PeopleComponent],

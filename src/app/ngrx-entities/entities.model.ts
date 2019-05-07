@@ -1,3 +1,9 @@
+export class EntitiesStateModel<T extends { id: string }> {
+  entities: { [id: string]: T };
+  ids: string[];
+  paging: ApiCollectionPagingInfo;
+}
+
 export class ApiCollectionPagingInfo {
 
   constructor(

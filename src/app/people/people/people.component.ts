@@ -2,9 +2,9 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { PeopleState } from '../people.state';
-import { Person } from '../people.model';
-import * as peopleActions from '../people.actions';
+import { PeopleState } from '../state/people.state';
+import { Person } from '../state/people.model';
+import * as peopleActions from '../state/people.actions';
 
 @Component({
   selector: 'app-people',

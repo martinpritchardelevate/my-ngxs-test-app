@@ -1,5 +1,4 @@
-import { EntitiesStateModel } from './entities.model';
-import { ApiCollectionPagingInfo } from './api-collection.model';
+import { EntitiesStateModel, ApiCollectionPagingInfo } from '../../ngrx-entities';
 
 export class PeopleStateModel implements EntitiesStateModel<Person> {
   constructor(

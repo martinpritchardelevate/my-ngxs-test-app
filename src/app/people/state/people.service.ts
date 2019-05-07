@@ -2,14 +2,16 @@ import { Injectable, Inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Person } from './people.model';
-import { ApiCollection, ApiCollectionPagingInfo } from './api-collection.model';
+import { ApiCollection, ApiCollectionPagingInfo } from '../../ngrx-entities';
 
 @Injectable()
-export  class PeopleService {
+export class PeopleService {
 
-    createPerson() {}
+    create(person: Person): Observable<Person> {
+      return of(person);
+    }
 
-    readPeople(pageNo: number = 1): Observable<ApiCollection<Person>> {
+    read(pageNo: number = 1): Observable<ApiCollection<Person>> {
       const collection = new ApiCollection<Person>();
 
       if (pageNo === 1) {
@@ -32,17 +34,12 @@ export  class PeopleService {
       return of(collection);
     }
 
-    readMorePeople(): Observable<ApiCollection<Person>> {
-      const collection = new ApiCollection<Person>();
-
-
-      return of(collection);
+    update(person: Person): Observable<Person> {
+      return of(person);
     }
 
-    updatePerson() {}
-
-    deletePerson() {
-
+    delete(person: Person): Observable<Person> {
+      return of(person);
     }
 
 }
