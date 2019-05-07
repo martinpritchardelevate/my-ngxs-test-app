@@ -3,36 +3,40 @@ import { ApiCollection } from './entities.model';
 
 export class CRUD {
 
-  static create<T extends { id: string }>(entity: T) {
+  static create<T extends { id: string }>(entity: T, selector: string = null) {
     return produce(draft => {
-      draft.entities[ entity.id ] = entity;
-      draft.ids.push( entity.id );
+      const selected = selector ? draft[selector] : draft;
+      selected.entities[ entity.id ] = entity;
+      selected.ids.push( entity.id );
     });
   }
 
-  static read<T extends { id: string }>(apiCollection: ApiCollection<T>) {
+  static read<T extends { id: string }>(apiCollection: ApiCollection<T>, selector: string = null) {
     return produce(draft => {
+      const selected = selector ? draft[selector] : draft;
       apiCollection.items.forEach(item => {
-        if (!draft.entities[item.id]) {
-          draft.ids.push(item.id);
+        if (!selected.entities[item.id]) {
+          selected.ids.push(item.id);
         }
-        draft.entities[item.id] = item;
+        selected.entities[item.id] = item;
       });
-      draft.paging = apiCollection.paging;
+      selected.paging = apiCollection.paging;
     });
   }
 
-  static update<T extends { id: string }>(entity: T) {
+  static update<T extends { id: string }>(entity: T, selector: string = null) {
     return produce(draft => {
-      draft.entities[ entity.id ] = entity;
+      const selected = selector ? draft[selector] : draft;
+      selected.entities[ entity.id ] = entity;
     });
   }
 
-  static delete<T extends { id: string }>(entity: T) {
+  static delete<T extends { id: string }>(entity: T, selector: string = null) {
     return produce(draft => {
-      draft.ids = draft.ids.filter(id => id !== entity.id);
-      if (draft.entities[entity.id]) {
-        delete draft.entities[entity.id];
+      const selected = selector ? draft[selector] : draft;
+      selected.ids = selected.ids.filter(id => id !== entity.id);
+      if (selected.entities[entity.id]) {
+        delete selected.entities[entity.id];
       }
     });
   }
