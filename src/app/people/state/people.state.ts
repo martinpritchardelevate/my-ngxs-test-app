@@ -95,7 +95,7 @@ export class PeopleState {
   @Action(actions.Delete)
   delete = (context: StateContext<PeopleStateModel>, action: actions.Delete) => {
     context.setState(CRUD.setBusy());
-    this.peopleService.delete(action.entity)
+    return this.peopleService.delete(action.entity)
       .pipe(
         success(person => context.dispatch(new actions.DeleteSuccess(person))),
         catchError(error => context.dispatch(new actions.DeleteFailed(error))));
