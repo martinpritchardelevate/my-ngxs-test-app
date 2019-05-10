@@ -6,12 +6,9 @@ import { Person } from './people.model';
 @Injectable()
 export class PeopleService {
 
-    create(person: Person): Observable<Person> {
-      return of(person);
-    }
-
-    read(pageNo: number = 1): Observable<ApiCollection<Person>> {
+    list(pageNo: number = 1): Observable<ApiCollection<Person>> {
       const collection = new ApiCollection<Person>();
+      debugger;
 
       if (pageNo === 1) {
         collection.items.push(new Person('1', 'Elliott', 'Pritchard', 10));
@@ -31,6 +28,14 @@ export class PeopleService {
         collection.paging = new ApiCollectionPagingInfo(10, 3, 3);
       }
       return of(collection);
+    }
+
+    create(person: Person): Observable<Person> {
+      return of(person);
+    }
+
+    read(person: Person): Observable<Person> {
+      return of(person);
     }
 
     update(person: Person): Observable<Person> {

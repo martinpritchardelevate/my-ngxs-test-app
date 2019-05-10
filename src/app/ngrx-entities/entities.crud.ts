@@ -1,56 +1,78 @@
-import { produce } from 'immer';
-import { ApiCollection, EntitiesStateModel } from './entities.model';
+import { produce, Draft } from 'immer';
+import { ApiCollection, ApiCollectionPagingInfo } from './entities.model';
+
+/******************************************************/
+/* CRUD OPERATORS                                     */
+/******************************************************/
+/* Please use these helpers in your *.state.ts files  */
+/* to make sure we deal with CRUD operations in a     */
+/* standardized way.                                  */
+/******************************************************/
 
 export class CRUD {
 
-  static setBusy<T extends { id: string }>(selector: string = null) {
-    return produce(draft => {
-      const selected: EntitiesStateModel<T> = selector ? draft[selector] : draft;
-      selected.isBusy = true;
-    });
-  }
+    static list<T extends { id: string }>(apiCollection: ApiCollection<T>) {
+        return produce(draft => {
+            apiCollection.items.forEach(item => {
+                if (!draft.entities[item.id]) {
+                    draft.ids.push(item.id);
+                }
+                draft.entities[item.id] = item as Draft<T>;
+            });
+            draft.paging = apiCollection.paging;
+            draft.isBusy = false;
+        });
+    }
 
-  static create<T extends { id: string }>(entity: T, selector: string = null) {
-    return produce(draft => {
-      const selected: EntitiesStateModel<T> = selector ? draft[selector] : draft;
-      selected.entities[ entity.id ] = entity;
-      selected.ids.push( entity.id );
-      selected.isBusy = false;
-    });
-  }
+    static create<T extends { id: string }>(entity: T) {
+        return produce(draft => {
+            draft.entities[entity.id] = entity as Draft<T>;
+            draft.ids.push(entity.id);
+            draft.isBusy = false;
+        });
+    }
 
-  static read<T extends { id: string }>(apiCollection: ApiCollection<T>, selector: string = null) {
-    return produce(draft => {
-      const selected: EntitiesStateModel<T> = selector ? draft[selector] : draft;
-      apiCollection.items.forEach(item => {
-        if (!selected.entities[item.id]) {
-          selected.ids.push(item.id);
-        }
-        selected.entities[item.id] = item;
-      });
-      selected.paging = apiCollection.paging;
-      selected.isBusy = false;
-    });
-  }
+    static read<T extends { id: string }>(entity: T) {
+        return produce(draft => {
+            if (!draft.entities[entity.id]) {
+                draft.ids.push(entity.id);
+            }
+            draft.entities[entity.id] = Object.assign({}, entity) as Draft<T>;
+            draft.isBusy = false;
+        });
+    }
 
-  static update<T extends { id: string }>(entity: T, selector: string = null) {
-    return produce(draft => {
-      const selected: EntitiesStateModel<T> = selector ? draft[selector] : draft;
-      selected.entities[ entity.id ] = { ...entity };
-      selected.isBusy = false;
-    });
-  }
+    static update<T extends { id: string }>(entity: T) {
+        return produce(draft => {
+            draft.entities[entity.id] = Object.assign({}, entity) as Draft<T>;
+            draft.isBusy = false;
+        });
+    }
 
-  static delete<T extends { id: string }>(entity: T, selector: string = null) {
-    return produce(draft => {
-      const selected: EntitiesStateModel<T> = selector ? draft[selector] : draft;
-      selected.ids = selected.ids.filter(id => id !== entity.id);
-      if (selected.entities[entity.id]) {
-        delete selected.entities[entity.id];
-      }
-      selected.isBusy = false;
-    });
-  }
+    static delete<T extends { id: string }>(entity: T) {
+        return produce(draft => {
+            draft.ids = draft.ids.filter(id => id !== entity.id);
+            if (draft.entities[entity.id]) {
+                delete draft.entities[entity.id];
+            }
+            draft.isBusy = false;
+        });
+    }
+
+    static setBusy<T extends { id: string }>() {
+        return produce(draft => {
+            draft.isBusy = true;
+        });
+    }
+
+    static clearList<T extends { id: string }>() {
+        return produce(draft => {
+            draft.ids = [];
+            draft.entities = {};
+            draft.paging = new ApiCollectionPagingInfo();
+            draft.isBusy = true;
+        });
+    }
 
 }
 

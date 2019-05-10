@@ -26,13 +26,13 @@ export class PeopleComponent implements OnInit {
 
   ngOnInit() {
     this.createEmptyPerson();
-    this.peopleRead();
+    this.peopleList();
   }
 
   // CRUD (Create, Read, Update, Delete) NGXS methods...
   @Dispatch() personCreate = (person: Person) => new peopleActions.Create(person);
-  @Dispatch() peopleRead = () => new peopleActions.Read();
-  @Dispatch() peopleReadMore = () => new peopleActions.ReadMore();
+  @Dispatch() peopleList = () => new peopleActions.List(null);
+  @Dispatch() peopleListMore = () => new peopleActions.ListMore(null);
   @Dispatch() personUpdate = (person: Person) => new peopleActions.Update(person);
   @Dispatch() personDelete = (person: Person) => new peopleActions.Delete(person);
 
@@ -63,7 +63,7 @@ export class PeopleComponent implements OnInit {
   }
 
   async onLoadMoreClicked($event) {
-     this.peopleReadMore();
+     this.peopleListMore();
   }
 
 }

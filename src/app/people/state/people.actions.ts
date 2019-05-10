@@ -4,6 +4,26 @@ import { Person } from './people.model';
 const featureName = 'People';
 
 /******************************************************/
+/* LIST                                               */
+/******************************************************/
+
+export class List extends entityActions.List<Person, string> {
+  static readonly entityDescription = `${featureName}`;
+}
+
+export class ListMore extends entityActions.ListMore<Person, string> {
+  static readonly entityDescription = `${featureName}`;
+}
+
+export class ListSuccess extends entityActions.ListSuccess<Person> {
+  static readonly entityDescription = `${featureName}`;
+}
+
+export class ListFailed extends entityActions.ListFailed<Person> {
+  static readonly entityDescription = `${featureName}`;
+}
+
+/******************************************************/
 /* CREATE                                             */
 /******************************************************/
 
@@ -23,11 +43,7 @@ export class CreateFailed extends entityActions.CreateFailed<Person> {
 /* READ                                               */
 /******************************************************/
 
-export class Read extends entityActions.Read<Person> {
-  static readonly entityDescription = `${featureName}`;
-}
-
-export class ReadMore extends entityActions.ReadMore<Person> {
+export class Read extends entityActions.Read<Person, Person> {
   static readonly entityDescription = `${featureName}`;
 }
 

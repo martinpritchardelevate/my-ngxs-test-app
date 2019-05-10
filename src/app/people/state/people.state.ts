@@ -34,13 +34,39 @@ export class PeopleState {
   }
 
   /******************************************************/
+  /* LIST                                               */
+  /******************************************************/
+
+  @Action([actions.List])
+  list = (context: StateContext<PeopleStateModel>, action: actions.List) => {
+    context.setState(CRUD.setBusy());
+    return this.peopleService.list()
+      .pipe(
+        success(people => context.dispatch(new actions.ListSuccess(people))),
+        catchError(error => context.dispatch(new actions.ListFailed(error))));
+  }
+
+  @Action(actions.ListMore)
+  listMore = (context: StateContext<PeopleStateModel>, action: actions.ListMore) => {
+    context.setState(CRUD.setBusy());
+    return this.peopleService.list(getNextPage(context.getState()))
+      .pipe(
+        success(people => context.dispatch(new actions.ListSuccess(people))),
+        catchError(error => context.dispatch(new actions.ListFailed(error))));
+  }
+
+  @Action([actions.ListSuccess])
+  listSuccess = (context: StateContext<PeopleStateModel>, action: actions.ListSuccess) =>
+    context.setState(CRUD.list(action.payload))
+
+  /******************************************************/
   /* CREATE                                             */
   /******************************************************/
 
   @Action(actions.Create)
   create = (context: StateContext<PeopleStateModel>, action: actions.Create) => {
     context.setState(CRUD.setBusy());
-    return this.peopleService.create(action.entity)
+    return this.peopleService.create(action.payload)
       .pipe(
         success(person => context.dispatch(new actions.CreateSuccess(person))),
         catchError(error => context.dispatch(new actions.CreateFailed(error))));
@@ -48,33 +74,27 @@ export class PeopleState {
 
   @Action(actions.CreateSuccess)
   createSuccess = (context: StateContext<PeopleStateModel>, action: actions.CreateSuccess) =>
-    context.setState(CRUD.create(action.entity))
+    context.setState(CRUD.create(action.payload))
+
 
   /******************************************************/
   /* READ                                               */
   /******************************************************/
 
-  @Action([actions.Read])
-  read = (context: StateContext<PeopleStateModel>, action: actions.Create) => {
+  @Action(actions.Read)
+  read = (context: StateContext<PeopleStateModel>, action: actions.Read) => {
     context.setState(CRUD.setBusy());
-    return this.peopleService.read()
+    return this.peopleService.read(action.payload)
       .pipe(
-        success(people => context.dispatch(new actions.ReadSuccess(people))),
-        catchError(error => context.dispatch(new actions.ReadFailed(error))));
-  }
-
-  @Action(actions.ReadMore)
-  readMore = (context: StateContext<PeopleStateModel>, action: actions.ReadMore) => {
-    context.setState(CRUD.setBusy());
-    return this.peopleService.read(getNextPage(context.getState()))
-      .pipe(
-        success(people => context.dispatch(new actions.ReadSuccess(people))),
+        success(person => context.dispatch(new actions.ReadSuccess(person))),
         catchError(error => context.dispatch(new actions.ReadFailed(error))));
   }
 
   @Action([actions.ReadSuccess])
   readSuccess = (context: StateContext<PeopleStateModel>, action: actions.ReadSuccess) =>
-    context.setState(CRUD.read(action.apiCollection))
+    context.setState(CRUD.read(action.payload))
+
+
 
   /******************************************************/
   /* UPDATE                                             */
@@ -83,7 +103,7 @@ export class PeopleState {
   @Action(actions.Update)
   update = (context: StateContext<PeopleStateModel>, action: actions.Update) => {
     context.setState(CRUD.setBusy());
-    return this.peopleService.update(action.entity)
+    return this.peopleService.update(action.payload)
       .pipe(
         success(person => context.dispatch(new actions.UpdateSuccess(person))),
         catchError(error => context.dispatch(new actions.UpdateFailed(error))));
@@ -91,7 +111,7 @@ export class PeopleState {
 
   @Action([actions.UpdateSuccess])
   updateSuccess = (context: StateContext<PeopleStateModel>, action: actions.UpdateSuccess) =>
-    context.setState(CRUD.update(action.entity))
+    context.setState(CRUD.update(action.payload))
 
   /******************************************************/
   /* DELETE                                             */
@@ -100,7 +120,7 @@ export class PeopleState {
   @Action(actions.Delete)
   delete = (context: StateContext<PeopleStateModel>, action: actions.Delete) => {
     context.setState(CRUD.setBusy());
-    return this.peopleService.delete(action.entity)
+    return this.peopleService.delete(action.payload)
       .pipe(
         success(person => context.dispatch(new actions.DeleteSuccess(person))),
         catchError(error => context.dispatch(new actions.DeleteFailed(error))));
@@ -108,6 +128,6 @@ export class PeopleState {
 
   @Action([actions.DeleteSuccess])
   deleteSuccess = (context: StateContext<PeopleStateModel>, action: actions.DeleteSuccess) =>
-    context.setState(CRUD.delete(action.entity))
+    context.setState(CRUD.delete(action.payload))
 
 }
